@@ -1,0 +1,370 @@
+/* ============================================
+   RETRO GAME STORE — site.css
+   Main stylesheet for all pages except Login
+   ============================================ */
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0f0f1a;
+  color: #e0e0e0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+}
+
+a {
+  color: #c0c0ff;
+  text-decoration: none;
+}
+a:hover {
+  color: #ff00ff;
+}
+
+/* ---------- Navbar ---------- */
+.navbar-retro {
+  background: linear-gradient(90deg, #1a001a, #0d0d2b);
+  border-bottom: 2px solid #9b00ff;
+  padding: 10px 0;
+}
+
+.navbar-brand {
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: #ff00ff !important;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px #ff00ff;
+}
+
+.nav-link {
+  color: #c0c0ff !important;
+  transition: color 0.2s;
+  padding: 6px 12px !important;
+}
+
+.nav-link:hover {
+  color: #ff00ff !important;
+}
+.nav-link.active {
+  color: #ff00ff !important;
+  border-bottom: 2px solid #ff00ff;
+}
+
+/* ---------- Role Badges ---------- */
+.badge-role {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.badge-admin {
+  background-color: #cc0000;
+  color: #fff;
+}
+.badge-staff {
+  background-color: #cc9900;
+  color: #111;
+}
+.badge-customer {
+  background-color: #006600;
+  color: #fff;
+}
+
+/* ---------- Main Content ---------- */
+.main-content {
+  padding: 30px 0;
+  min-height: calc(100vh - 130px);
+}
+
+/* ---------- Page Headings ---------- */
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ff00ff;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.4);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.page-subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background-color: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  border-radius: 12px;
+}
+
+.card-header {
+  background: linear-gradient(90deg, #1a001a, #0d0d2b);
+  border-bottom: 1px solid #9b00ff;
+  color: #ff00ff;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: 12px 12px 0 0 !important;
+  padding: 14px 20px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* ---------- Stat Cards (Dashboard) ---------- */
+.stat-card {
+  background: linear-gradient(135deg, #1a1a2e, #0d0d2b);
+  border: 1px solid #2a2a4a;
+  border-radius: 14px;
+  padding: 24px;
+  text-align: center;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(155, 0, 255, 0.2);
+}
+
+.stat-card .stat-icon {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+
+.stat-card .stat-value {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ff00ff;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.4);
+}
+
+.stat-card .stat-label {
+  font-size: 0.85rem;
+  color: #888;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.stat-card.stat-warning .stat-value {
+  color: #ffcc00;
+  text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+}
+.stat-card.stat-success .stat-value {
+  color: #00cc66;
+  text-shadow: 0 0 10px rgba(0, 204, 102, 0.4);
+}
+.stat-card.stat-info .stat-value {
+  color: #00ccff;
+  text-shadow: 0 0 10px rgba(0, 204, 255, 0.4);
+}
+
+/* ---------- Tables ---------- */
+.table {
+  color: #e0e0e0;
+  border-color: #2a2a4a;
+}
+
+.table thead th {
+  background-color: #1a1a3e;
+  color: #c0c0ff;
+  border-color: #2a2a4a;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 12px 16px;
+}
+
+.table tbody td {
+  border-color: #2a2a4a;
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #1e1e3a;
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  background-color: #6600cc;
+  border-color: #9b00ff;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background-color: #9b00ff;
+  border-color: #ff00ff;
+  box-shadow: 0 0 12px rgba(155, 0, 255, 0.4);
+}
+
+.btn-outline-primary {
+  border-color: #6600cc;
+  color: #c0c0ff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #6600cc;
+  color: #fff;
+}
+
+.btn-warning {
+  font-weight: 600;
+}
+.btn-danger {
+  font-weight: 600;
+}
+.btn-success {
+  font-weight: 600;
+}
+
+/* ---------- Forms ---------- */
+.form-label {
+  color: #c0c0ff;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-control,
+.form-select {
+  background-color: #0d0d2b;
+  border: 1px solid #3a3a6a;
+  color: #e0e0e0;
+  border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #0d0d2b;
+  border-color: #9b00ff;
+  color: #e0e0e0;
+  box-shadow: 0 0 0 0.2rem rgba(155, 0, 255, 0.25);
+}
+
+.form-control::placeholder {
+  color: #555;
+}
+
+.form-select option {
+  background-color: #0d0d2b;
+}
+
+/* ---------- Alerts ---------- */
+.alert-success {
+  background-color: #0d2b1a;
+  border-color: #006600;
+  color: #00cc66;
+}
+
+.alert-danger {
+  background-color: #2b0d0d;
+  border-color: #660000;
+  color: #ff6666;
+}
+
+.alert-warning {
+  background-color: #2b250d;
+  border-color: #665500;
+  color: #ffcc00;
+}
+
+/* ---------- Badges ---------- */
+.badge-platform {
+  background-color: #1a1a4e;
+  color: #c0c0ff;
+  border: 1px solid #3a3a6a;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.badge-lowstock {
+  background-color: #4a1a00;
+  color: #ff6600;
+  border: 1px solid #662200;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* ---------- Game Cards (Browse page) ---------- */
+.game-card {
+  background: linear-gradient(135deg, #1a1a2e, #0d0d2b);
+  border: 1px solid #2a2a4a;
+  border-radius: 14px;
+  padding: 20px;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
+  height: 100%;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(155, 0, 255, 0.25);
+  border-color: #9b00ff;
+}
+
+.game-card .game-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #e0e0e0;
+  margin-bottom: 6px;
+}
+
+.game-card .game-price {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #ff00ff;
+  text-shadow: 0 0 8px rgba(255, 0, 255, 0.3);
+}
+
+.game-card .game-platform {
+  font-size: 0.78rem;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+/* ---------- Search / Filter Bar ---------- */
+.filter-bar {
+  background-color: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  background-color: #0d0d1a;
+  border-top: 1px solid #2a2a4a;
+  color: #555;
+  padding: 16px 0;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f0f1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #3a3a6a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9b00ff;
+}
