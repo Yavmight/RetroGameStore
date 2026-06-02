@@ -1,0 +1,93 @@
+@model RetroGameStore.Models.User
+@{
+    ViewData["Title"] = "Customer Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+        <div class="page-title">👤 @Model.FullName</div>
+        <div class="page-subtitle">@Model.Email</div>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Back to Customers
+    </a>
+</div>
+
+<!-- Summary -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon">🧾</div>
+            <div class="stat-value">@Model.Orders.Count</div>
+            <div class="stat-label">Total Orders</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card stat-success">
+            <div class="stat-icon">💰</div>
+            <div class="stat-value">$@Model.Orders.Where(o => o.Status == RetroGameStore.Models.OrderStatus.Completed).Sum(o => o.TotalPrice).ToString("F2")</div>
+            <div class="stat-label">Total Spent</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card stat-info">
+            <div class="stat-icon">🎮</div>
+            <div class="stat-value">@Model.Orders.Sum(o => o.Quantity)</div>
+            <div class="stat-label">Games Bought</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card stat-warning">
+            <div class="stat-icon">↩️</div>
+            <div class="stat-value">@Model.Orders.Count(o => o.Status == RetroGameStore.Models.OrderStatus.Refunded)</div>
+            <div class="stat-label">Refunded</div>
+        </div>
+    </div>
+</div>
+
+<!-- Order History -->
+<div class="card">
+    <div class="card-header"><i class="bi bi-clock-history"></i> Order History</div>
+    <div class="card-body p-0">
+        @if (!Model.Orders.Any())
+        {
+            <div class="text-center py-5 text-muted">This customer has no orders yet.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Game</th>
+                            <th>Platform</th>
+                            <th>Qty</th>
+                            <th>Total</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.Orders.OrderByDescending(o => o.OrderDate))
+                        {
+                            <tr>
+                                <td>#@order.Id</td>
+                                <td><strong>@order.Game.Title</strong></td>
+                                <td><span class="badge-platform">@order.Game.Platform</span></td>
+                                <td>@order.Quantity</td>
+                                <td>$@order.TotalPrice.ToString("F2")</td>
+                                <td>@order.OrderDate.ToString("MMM dd, yyyy")</td>
+                                <td>
+                                    <span class="badge @(order.Status == RetroGameStore.Models.OrderStatus.Completed ? "bg-success" : order.Status == RetroGameStore.Models.OrderStatus.Refunded ? "bg-danger" : "bg-warning text-dark")">
+                                        @order.Status
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
