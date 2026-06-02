@@ -1,0 +1,73 @@
+@model List<RetroGameStore.Models.Game>
+@{
+    ViewData["Title"] = "Low Stock Alerts";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+        <div class="page-title">⚠️ Low Stock Alerts</div>
+        <div class="page-subtitle">@Model.Count game(s) need restocking.</div>
+    </div>
+    @if (ViewBag.UserRole == "Admin")
+    {
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Game</a>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <div style="font-size: 3rem;">✅</div>
+            <h5 class="mt-3" style="color:#00cc66;">All games are well stocked!</h5>
+            <p class="text-muted">No titles are below their low stock threshold.</p>
+            <a asp-action="Index" class="btn btn-outline-primary mt-2">Back to Inventory</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Platform</th>
+                            <th>Genre</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Threshold</th>
+                            @if (ViewBag.UserRole == "Admin")
+                            {
+                                <th>Action</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var game in Model)
+                        {
+                            <tr>
+                                <td><strong>@game.Title</strong></td>
+                                <td><span class="badge-platform">@game.Platform</span></td>
+                                <td>@game.Genre</td>
+                                <td>$@game.Price.ToString("F2")</td>
+                                <td><span class="badge-lowstock"><i class="bi bi-exclamation-triangle"></i> @game.Stock</span></td>
+                                <td class="text-muted">@game.LowStockThreshold</td>
+                                @if (ViewBag.UserRole == "Admin")
+                                {
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@game.Id" class="btn btn-sm btn-warning">
+                                            <i class="bi bi-pencil"></i> Restock
+                                        </a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
