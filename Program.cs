@@ -7,8 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
+// Use /tmp on Railway (Linux) so SQLite has a writable path
+var dbPath = OperatingSystem.IsLinux()
+    ? "/tmp/RetroGameStore.db"
+    : "RetroGameStore.db";
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite($"Data Source={dbPath}"));
 
 
 builder.Services.AddDistributedMemoryCache();
@@ -31,13 +36,11 @@ using (var scope = app.Services.CreateScope())
 // Middleware pipeline
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-else
-{
-    app.UseHttpsRedirection();
-}
+
+// Show detailed errors so we can debug on Railway
+app.UseDeveloperExceptionPage();
 
 app.UseStaticFiles();
 app.UseRouting();
