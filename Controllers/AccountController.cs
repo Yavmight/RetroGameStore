@@ -12,23 +12,62 @@ namespace RetroGameStore.Controllers
             _db = db;
         }
 
-        // GET: /Account/Login
+        // GET: /Account/Login — redirects to LoginCustomer
         [HttpGet]
         public IActionResult Login()
         {
-            // Redirect if already logged in
             if (HttpContext.Session.GetString("UserEmail") != null)
                 return RedirectBasedOnRole(HttpContext.Session.GetString("UserRole")!);
 
-            return View();
+            return RedirectToAction("LoginCustomer");
+        }
+
+        // GET: /Account/LoginCustomer
+        [HttpGet]
+        public IActionResult LoginCustomer()
+        {
+            if (HttpContext.Session.GetString("UserEmail") != null)
+                return RedirectBasedOnRole(HttpContext.Session.GetString("UserRole")!);
+
+            ViewBag.LoginType = "Customer";
+            return View("Login");
+        }
+
+        // GET: /Account/LoginStaff
+        [HttpGet]
+        public IActionResult LoginStaff()
+        {
+            if (HttpContext.Session.GetString("UserEmail") != null)
+                return RedirectBasedOnRole(HttpContext.Session.GetString("UserRole")!);
+
+            ViewBag.LoginType = "Staff";
+            return View("LoginStaff");
+        }
+
+        // GET: /Account/LoginAdmin
+        [HttpGet]
+        public IActionResult LoginAdmin()
+        {
+            if (HttpContext.Session.GetString("UserEmail") != null)
+                return RedirectBasedOnRole(HttpContext.Session.GetString("UserRole")!);
+
+            ViewBag.LoginType = "Admin";
+            return View("LoginAdmin");
         }
 
         // POST: /Account/Login
         [HttpPost]
-        public IActionResult Login(LoginViewModel model)
+        public IActionResult Login(LoginViewModel model, string? loginType)
         {
             if (!ModelState.IsValid)
-                return View(model);
+            {
+                return loginType switch
+                {
+                    "Staff" => View("LoginStaff", model),
+                    "Admin" => View("LoginAdmin", model),
+                    _ => View("Login", model)
+                };
+            }
 
             var user = _db.Users.FirstOrDefault(u =>
                 u.Email == model.Email && u.Password == model.Password);
@@ -36,10 +75,27 @@ namespace RetroGameStore.Controllers
             if (user == null)
             {
                 ModelState.AddModelError("", "Invalid email or password.");
-                return View(model);
+                return loginType switch
+                {
+                    "Staff" => View("LoginStaff", model),
+                    "Admin" => View("LoginAdmin", model),
+                    _ => View("Login", model)
+                };
             }
 
-            // Store session (same pattern as template)
+            // Validate role match
+            if (!string.IsNullOrEmpty(loginType) && user.Role.ToString() != loginType)
+            {
+                ModelState.AddModelError("", $"This account is not a {loginType} account.");
+                return loginType switch
+                {
+                    "Staff" => View("LoginStaff", model),
+                    "Admin" => View("LoginAdmin", model),
+                    _ => View("Login", model)
+                };
+            }
+
+            // Store session
             HttpContext.Session.SetString("UserEmail", user.Email);
             HttpContext.Session.SetString("UserName", user.FullName);
             HttpContext.Session.SetString("UserRole", user.Role.ToString());
@@ -52,7 +108,7 @@ namespace RetroGameStore.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Login");
+            return RedirectToAction("LoginCustomer");
         }
 
         // Helper: redirect to the right page based on role
@@ -63,7 +119,7 @@ namespace RetroGameStore.Controllers
                 "Admin"    => RedirectToAction("Index", "Dashboard"),
                 "Staff"    => RedirectToAction("Index", "Dashboard"),
                 "Customer" => RedirectToAction("Browse", "Orders"),
-                _          => RedirectToAction("Login")
+                _          => RedirectToAction("LoginCustomer")
             };
         }
     }
