@@ -160,6 +160,13 @@ namespace RetroGameStore.Migrations
                     b.Property<int>("GameId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DeliveryAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FulfillmentType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("TEXT");
 
@@ -168,6 +175,10 @@ namespace RetroGameStore.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("TEXT");
@@ -182,6 +193,58 @@ namespace RetroGameStore.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 101,
+                            FulfillmentType = "Store Pickup",
+                            GameId = 1,
+                            OrderDate = new DateTime(2026, 6, 1, 10, 30, 0),
+                            PaymentMethod = "Cash",
+                            Quantity = 1,
+                            Status = 0,
+                            TotalPrice = 29.99m,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 102,
+                            DeliveryAddress = "Demo Street 12",
+                            FulfillmentType = "Delivery to Home",
+                            GameId = 3,
+                            OrderDate = new DateTime(2026, 6, 1, 12, 10, 0),
+                            PaymentMethod = "Cash",
+                            Quantity = 2,
+                            Status = 2,
+                            TotalPrice = 69.98m,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 103,
+                            FulfillmentType = "Store Pickup",
+                            GameId = 7,
+                            OrderDate = new DateTime(2026, 6, 2, 15, 45, 0),
+                            PaymentMethod = "Cash",
+                            Quantity = 1,
+                            Status = 0,
+                            TotalPrice = 54.99m,
+                            UserId = 4
+                        },
+                        new
+                        {
+                            Id = 104,
+                            DeliveryAddress = "Demo Avenue 7",
+                            FulfillmentType = "Delivery to Home",
+                            GameId = 8,
+                            OrderDate = new DateTime(2026, 6, 3, 9, 20, 0),
+                            PaymentMethod = "Cash",
+                            Quantity = 1,
+                            Status = 0,
+                            TotalPrice = 19.99m,
+                            UserId = 5
+                        });
                 });
 
             modelBuilder.Entity("RetroGameStore.Models.User", b =>
@@ -213,25 +276,41 @@ namespace RetroGameStore.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "admin@retrogames.com",
-                            FullName = "Admin User",
-                            Password = "admin123",
+                            Email = "admin@rgsdemo.com",
+                            FullName = "Nora Admin",
+                            Password = "Admin@123",
                             Role = 0
                         },
                         new
                         {
                             Id = 2,
-                            Email = "staff@retrogames.com",
-                            FullName = "Staff Member",
-                            Password = "staff123",
+                            Email = "staff@rgsdemo.com",
+                            FullName = "Omar Inventory",
+                            Password = "Staff@123",
                             Role = 1
                         },
                         new
                         {
                             Id = 3,
-                            Email = "customer@retrogames.com",
-                            FullName = "John Customer",
-                            Password = "customer123",
+                            Email = "lina@rgsdemo.com",
+                            FullName = "Lina Carter",
+                            Password = "Demo@123",
+                            Role = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Email = "maya@rgsdemo.com",
+                            FullName = "Maya Collins",
+                            Password = "Demo@123",
+                            Role = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Email = "adam@rgsdemo.com",
+                            FullName = "Adam Brooks",
+                            Password = "Demo@123",
                             Role = 2
                         });
                 });

@@ -116,9 +116,40 @@ namespace RetroGameStore.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: /Cart/Checkout
+        // GET: /Cart/CheckoutReview
+        public IActionResult CheckoutReview()
+        {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+
+            var cart = GetCart();
+            if (!cart.Any())
+            {
+                TempData["Error"] = "Your cart is empty.";
+                return RedirectToAction("Index");
+            }
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = userId == null ? null : _db.Users.Find(userId.Value);
+
+            return View(new CheckoutReviewViewModel
+            {
+                CartItems = cart,
+                CustomerName = user?.FullName ?? HttpContext.Session.GetString("UserName") ?? "Customer",
+                CustomerEmail = user?.Email ?? HttpContext.Session.GetString("UserEmail") ?? string.Empty
+            });
+        }
+
+        // Keep the old Checkout route working, but send it to the review step first.
         [HttpPost]
         public IActionResult Checkout()
+        {
+            return RedirectToAction("CheckoutReview");
+        }
+
+        // POST: /Cart/PlaceOrder
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult PlaceOrder(CheckoutReviewViewModel model)
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
 
@@ -126,10 +157,25 @@ namespace RetroGameStore.Controllers
             if (userId == null) return RedirectToAction("Login", "Account");
 
             var cart = GetCart();
+            model.CartItems = cart;
+
             if (!cart.Any())
             {
                 TempData["Error"] = "Your cart is empty.";
                 return RedirectToAction("Index");
+            }
+
+            if (model.FulfillmentType == "Delivery to Home" && string.IsNullOrWhiteSpace(model.DeliveryAddress))
+            {
+                ModelState.AddModelError(nameof(model.DeliveryAddress), "Delivery address is required for home delivery.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var user = _db.Users.Find(userId.Value);
+                model.CustomerName = user?.FullName ?? HttpContext.Session.GetString("UserName") ?? "Customer";
+                model.CustomerEmail = user?.Email ?? HttpContext.Session.GetString("UserEmail") ?? string.Empty;
+                return View("CheckoutReview", model);
             }
 
             foreach (var item in cart)
@@ -148,7 +194,10 @@ namespace RetroGameStore.Controllers
                     Quantity = item.Quantity,
                     TotalPrice = item.Price * item.Quantity,
                     OrderDate = DateTime.Now,
-                    Status = OrderStatus.Completed
+                    Status = OrderStatus.Pending,
+                    PaymentMethod = "Cash",
+                    FulfillmentType = model.FulfillmentType,
+                    DeliveryAddress = model.FulfillmentType == "Delivery to Home" ? model.DeliveryAddress : null
                 };
 
                 game.Stock -= item.Quantity;
@@ -156,12 +205,10 @@ namespace RetroGameStore.Controllers
             }
 
             _db.SaveChanges();
-
-            // Clear cart
             HttpContext.Session.Remove(CartSessionKey);
 
-            TempData["Success"] = $"Order placed! {cart.Count} item(s) purchased successfully.";
-            return RedirectToAction("MyOrders", "Orders");
+            TempData["Success"] = $"Order placed! Payment method: Cash. Order status: Pending.";
+            return RedirectToAction("CustomerProfile", "Account");
         }
 
         // Helper: get cart count (used via ViewComponent or ViewBag)

@@ -1,0 +1,20 @@
+@{
+    ViewData["Title"] = "Staff Profile";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <div class="page-title">🪪 Staff Profile</div>
+        <div class="page-subtitle">Simple staff/admin identity display for the demo.</div>
+    </div>
+    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-speedometer2"></i> Dashboard</a>
+</div>
+
+<div class="card" style="max-width: 520px;">
+    <div class="card-header"><i class="bi bi-person-badge"></i> Account Info</div>
+    <div class="card-body">
+        <h3 class="mb-1">@ViewBag.UserName</h3>
+        <div class="text-muted mb-3">@ViewBag.UserEmail</div>
+        <span class="badge @(ViewBag.UserRole == "Admin" ? "bg-danger" : "bg-warning text-dark")">@ViewBag.UserRole</span>
+    </div>
+</div>

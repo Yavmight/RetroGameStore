@@ -70,6 +70,8 @@ else
                             <th>Platform</th>
                             <th>Qty</th>
                             <th>Total</th>
+                            <th>Payment</th>
+                            <th>Receiving</th>
                             <th>Date</th>
                             <th>Status</th>
                         </tr>
@@ -83,6 +85,8 @@ else
                                 <td><span class="badge-platform">@order.Game.Platform</span></td>
                                 <td>@order.Quantity</td>
                                 <td>$@order.TotalPrice.ToString("F2")</td>
+                                <td>@order.PaymentMethod</td>
+                                <td>@order.FulfillmentType</td>
                                 <td>@order.OrderDate.ToString("MMM dd, yyyy")</td>
                                 <td>
                                     <span class="badge @(order.Status == RetroGameStore.Models.OrderStatus.Completed ? "bg-success" : order.Status == RetroGameStore.Models.OrderStatus.Refunded ? "bg-danger" : "bg-warning text-dark")">

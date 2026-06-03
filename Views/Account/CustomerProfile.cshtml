@@ -1,0 +1,88 @@
+@model RetroGameStore.Models.ProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+    var totalSpent = Model.Orders.Sum(o => o.TotalPrice);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <div class="page-title">👤 My Profile</div>
+        <div class="page-subtitle">Your account information and order history in one place.</div>
+    </div>
+    <a asp-controller="Orders" asp-action="Browse" class="btn btn-primary"><i class="bi bi-shop"></i> Browse Games</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-12 col-lg-4">
+        <div class="card h-100">
+            <div class="card-header"><i class="bi bi-person-circle"></i> User Info</div>
+            <div class="card-body">
+                <h4 class="mb-1">@Model.User.FullName</h4>
+                <div class="text-muted mb-3">@Model.User.Email</div>
+                <span class="badge bg-success">@Model.User.Role</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-4">
+        <div class="stat-card stat-info h-100">
+            <div class="stat-icon">🧾</div>
+            <div class="stat-value">@Model.Orders.Count</div>
+            <div class="stat-label">Orders</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-4">
+        <div class="stat-card stat-success h-100">
+            <div class="stat-icon">💰</div>
+            <div class="stat-value">$@totalSpent.ToString("F0")</div>
+            <div class="stat-label">Total Spent</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><i class="bi bi-bag-check"></i> My Orders</div>
+    <div class="card-body p-0">
+        @if (!Model.Orders.Any())
+        {
+            <div class="text-center py-5 text-muted">You have no orders yet.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Game</th>
+                            <th>Qty</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Receiving</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var order in Model.Orders)
+                    {
+                        <tr>
+                            <td>#@order.Id</td>
+                            <td><strong>@order.Game.Title</strong></td>
+                            <td>@order.Quantity</td>
+                            <td>$@order.TotalPrice.ToString("F2")</td>
+                            <td>@order.PaymentMethod</td>
+                            <td>@order.FulfillmentType</td>
+                            <td>@order.OrderDate.ToString("MMM dd, yyyy")</td>
+                            <td>
+                                <span class="badge @(order.Status == RetroGameStore.Models.OrderStatus.Completed ? "bg-success" : order.Status == RetroGameStore.Models.OrderStatus.Refunded ? "bg-danger" : "bg-warning text-dark")">
+                                    @order.Status
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

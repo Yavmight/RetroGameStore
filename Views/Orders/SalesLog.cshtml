@@ -47,6 +47,8 @@
                             <th>Game</th>
                             <th>Qty</th>
                             <th>Total</th>
+                            <th>Payment</th>
+                            <th>Receiving</th>
                             <th>Date</th>
                             <th>Status</th>
                             @if (ViewBag.UserRole == "Admin")
@@ -64,6 +66,8 @@
                                 <td>@order.Game.Title</td>
                                 <td>@order.Quantity</td>
                                 <td>$@order.TotalPrice.ToString("F2")</td>
+                                <td>@order.PaymentMethod</td>
+                                <td>@order.FulfillmentType</td>
                                 <td>@order.OrderDate.ToString("MMM dd, yyyy")</td>
                                 <td>
                                     <span class="badge @(order.Status == RetroGameStore.Models.OrderStatus.Completed ? "bg-success" : order.Status == RetroGameStore.Models.OrderStatus.Refunded ? "bg-danger" : "bg-warning text-dark")">

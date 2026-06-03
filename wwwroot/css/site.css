@@ -19,6 +19,10 @@ body {
   min-height: 100vh;
 }
 
+.text-muted {
+  color: #a0a0b0 !important;
+}
+
 a {
   color: #c0c0ff;
   text-decoration: none;

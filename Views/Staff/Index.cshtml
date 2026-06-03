@@ -1,0 +1,60 @@
+@model List<RetroGameStore.Models.User>
+@{
+    ViewData["Title"] = "Staff Management";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <div class="page-title">🛡️ Staff Management</div>
+        <div class="page-subtitle">@Model.Count staff member(s)</div>
+    </div>
+    <div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-person-plus"></i> Register Staff
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5 text-muted">No staff found.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var staff in Model)
+                        {
+                            <tr>
+                                <td>#@staff.Id</td>
+                                <td><strong>@staff.FullName</strong></td>
+                                <td>@staff.Email</td>
+                                <td><span class="badge bg-warning text-dark">@staff.Role</span></td>
+                                <td>
+                                    <form asp-action="Delete" asp-route-id="@staff.Id" method="post" class="d-inline"
+                                          onsubmit="return confirm('Remove @staff.FullName?')">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="bi bi-trash"></i> Remove
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

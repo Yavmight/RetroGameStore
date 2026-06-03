@@ -1,0 +1,104 @@
+@model RetroGameStore.Models.CheckoutReviewViewModel
+@{
+    ViewData["Title"] = "Checkout Review";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <div class="page-title"><i class="bi bi-clipboard-check"></i> Checkout Review</div>
+        <div class="page-subtitle">Confirm your order. Payment is cash only for this demo.</div>
+    </div>
+    <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-primary"><i class="bi bi-arrow-left"></i> Back to Cart</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-12 col-lg-8">
+        <div class="card mb-3">
+            <div class="card-header"><i class="bi bi-person"></i> Customer</div>
+            <div class="card-body">
+                <strong>@Model.CustomerName</strong><br />
+                <span class="text-muted">@Model.CustomerEmail</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><i class="bi bi-cart3"></i> Items</div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <tr>
+                                <td><strong>@item.Title</strong><br /><small class="text-muted">@item.Platform</small></td>
+                                <td>@item.Quantity</td>
+                                <td>$@item.Price.ToString("F2")</td>
+                                <td>$@((item.Price * item.Quantity).ToString("F2"))</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+        <div class="cart-summary-card">
+            <h4 class="cart-summary-title">Payment & Delivery</h4>
+            <form asp-controller="Cart" asp-action="PlaceOrder" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="PaymentMethod" value="Cash" />
+
+                <div class="mb-3">
+                    <label class="form-label">Payment Method</label>
+                    <div class="alert alert-info mb-0"><i class="bi bi-cash"></i> Cash payment</div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="FulfillmentType" class="form-label"></label>
+                    <select asp-for="FulfillmentType" class="form-select" id="fulfillmentType">
+                        <option value="Store Pickup">Store Pickup</option>
+                        <option value="Delivery to Home">Delivery to Home</option>
+                    </select>
+                    <span asp-validation-for="FulfillmentType" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3" id="deliveryAddressBox">
+                    <label asp-for="DeliveryAddress" class="form-label"></label>
+                    <textarea asp-for="DeliveryAddress" class="form-control" rows="3" placeholder="Required only for home delivery"></textarea>
+                    <span asp-validation-for="DeliveryAddress" class="text-danger small"></span>
+                </div>
+
+                <div class="summary-row"><span>Items</span><span>@Model.TotalItems</span></div>
+                <div class="summary-row"><span>Shipping</span><span class="text-success">Free</span></div>
+                <hr class="detail-divider" />
+                <div class="summary-row summary-total"><span>Total</span><span>$@Model.Total.ToString("F2")</span></div>
+
+                <button type="submit" class="btn-checkout mt-3">
+                    <i class="bi bi-check2-circle"></i> Place Cash Order
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    function toggleAddress() {
+        const select = document.getElementById('fulfillmentType');
+        const box = document.getElementById('deliveryAddressBox');
+        box.style.display = select.value === 'Delivery to Home' ? 'block' : 'none';
+    }
+    document.getElementById('fulfillmentType').addEventListener('change', toggleAddress);
+    toggleAddress();
+</script>
+}

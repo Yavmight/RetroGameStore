@@ -200,32 +200,6 @@ body {
   transform: translateY(0);
 }
 
-/* ---------- Hint Box ---------- */
-.hint-box {
-  margin-top: 24px;
-  padding: 14px 16px;
-  background-color: #0d0d2b;
-  border: 1px dashed #3a3a6a;
-  border-radius: 12px;
-  color: #bfc0ff;
-  font-size: 0.82rem;
-  line-height: 1.65;
-}
-
-.role-admin {
-  color: #ff6666;
-  font-weight: 700;
-}
-
-.role-staff {
-  color: #ffcc00;
-  font-weight: 700;
-}
-
-.role-customer {
-  color: #00cc66;
-  font-weight: 700;
-}
 
 /* ---------- Error Styles ---------- */
 .text-danger {

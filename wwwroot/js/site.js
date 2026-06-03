@@ -1,5 +1,5 @@
 // ============================================
-// Retro Game Store — site.js
+// Retro Nexus — site.js
 // Global UI interactions & DOM manipulation
 // ============================================
 

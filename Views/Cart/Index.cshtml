@@ -88,11 +88,9 @@ else
                     <span>Total</span>
                     <span>$@total.ToString("F2")</span>
                 </div>
-                <form asp-controller="Cart" asp-action="Checkout" method="post">
-                    <button type="submit" class="btn-checkout">
-                        <i class="bi bi-credit-card"></i> Proceed to Checkout
-                    </button>
-                </form>
+                <a asp-controller="Cart" asp-action="CheckoutReview" class="btn-checkout text-center text-decoration-none d-block">
+                    <i class="bi bi-clipboard-check"></i> Proceed to Checkout
+                </a>
             </div>
         </div>
     </div>

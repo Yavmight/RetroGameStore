@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] — Retro Game Store</title>
+    <title>@ViewData["Title"] — Retro Nexus</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
@@ -16,6 +16,7 @@
     var userRole = Context.Session.GetString("UserRole");
     var userName = Context.Session.GetString("UserName");
     var isLoggedIn = userRole != null;
+    var profileAction = userRole == "Customer" ? "CustomerProfile" : "StaffProfile";
     var cartCount = 0;
     if (isLoggedIn)
     {
@@ -36,7 +37,7 @@
 <nav class="navbar navbar-expand-lg navbar-retro">
     <div class="container">
         <a class="navbar-brand" asp-controller="Dashboard" asp-action="Index">
-            🕹️ RETRO GAME STORE
+            🕹️ RETRO NEXUS
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
             <span class="navbar-toggler-icon"></span>
@@ -76,6 +77,11 @@
                             <i class="bi bi-people"></i> Customers
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Staff" asp-action="Index">
+                            <i class="bi bi-person-badge"></i> Staff
+                        </a>
+                    </li>
                 }
 
                 @if (isLoggedIn && userRole == "Customer")
@@ -86,8 +92,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Orders" asp-action="MyOrders">
-                            <i class="bi bi-bag-check"></i> My Orders
+                        <a class="nav-link" asp-controller="Account" asp-action="CustomerProfile">
+                            <i class="bi bi-person-circle"></i> My Profile
                         </a>
                     </li>
                 }
@@ -116,7 +122,7 @@
                               userRole == "Staff" ? "bg-warning text-dark" : "bg-success")">
                             @userRole
                         </span>
-                        <span class="nav-link ms-2">👤 @userName</span>
+                        <a class="nav-link ms-2" asp-controller="Account" asp-action="@profileAction">👤 @userName</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-danger" asp-controller="Account" asp-action="Logout">
@@ -129,7 +135,7 @@
     </div>
 </nav>
 
-<!-- Alert messages (TempData) -->
+
 <div class="container mt-3">
     @if (TempData["Success"] != null)
     {
@@ -147,23 +153,22 @@
     }
 </div>
 
-<!-- Main content -->
+
 <div class="main-content">
     <div class="container">
         @RenderBody()
     </div>
 </div>
 
-<!-- Footer -->
+
 <footer class="py-3 mt-4">
     <div class="container text-center">
-        <small>🕹️ Retro Game Store &copy; @DateTime.Now.Year — All your classics, one place.</small>
+        <small>🕹️ Retro Nexus &copy; @DateTime.Now.Year — All your classics, one place.</small>
     </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
-<script src="~/js/validation.js" asp-append-version="true"></script>
 
 @await RenderSectionAsync("Scripts", required: false)
 
