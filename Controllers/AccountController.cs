@@ -92,8 +92,8 @@ namespace RetroGameStore.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var email = model.Email.Trim().ToLower();
-            if (_db.Users.Any(u => u.Email.ToLower() == email))
+            var email = model.Email.Trim();
+            if (_db.Users.Any(u => EF.Functions.Like(u.Email, email)))
             {
                 ModelState.AddModelError(nameof(model.Email), "This email is already registered.");
                 return View(model);
