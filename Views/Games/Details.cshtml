@@ -1,0 +1,149 @@
+@model RetroGameStore.Models.GameDetailViewModel
+@{
+    ViewData["Title"] = Model.Game.Title;
+}
+
+<div class="game-detail-page">
+    <!-- Back Button -->
+    <div class="mb-4">
+        @if (ViewBag.UserRole == "Customer")
+        {
+            <a asp-controller="Orders" asp-action="Browse" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left"></i> Back to Store
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Games" asp-action="Index" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left"></i> Back to Inventory
+            </a>
+        }
+    </div>
+
+    <div class="row g-4">
+        <!-- Left: Image Gallery -->
+        <div class="col-12 col-lg-5">
+            <div class="game-detail-gallery">
+                <div class="main-image-container">
+                    @if (!string.IsNullOrEmpty(Model.Game.CoverImageUrl))
+                    {
+                        <img id="mainImage" src="@Model.Game.CoverImageUrl" alt="@Model.Game.Title" class="main-image" />
+                    }
+                    else
+                    {
+                        <div class="main-image-placeholder">
+                            <i class="bi bi-joystick"></i>
+                            <span>No Image Available</span>
+                        </div>
+                    }
+                </div>
+                @if (Model.GalleryImages.Count > 1)
+                {
+                    <div class="gallery-thumbnails">
+                        @foreach (var img in Model.GalleryImages)
+                        {
+                            <img src="@img" alt="Gallery" class="gallery-thumb" />
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Right: Game Info Panel -->
+        <div class="col-12 col-lg-7">
+            <div class="game-detail-info">
+                <div class="game-detail-platform">
+                    <span class="badge-platform">@Model.Game.Platform</span>
+                    <span class="badge-platform">@Model.Game.Genre</span>
+                    <span class="badge-platform">@Model.Game.ReleaseYear</span>
+                </div>
+                <h1 class="game-detail-title">@Model.Game.Title</h1>
+                <div class="game-detail-price">$@Model.Game.Price.ToString("F2")</div>
+
+                <div class="game-detail-stock">
+                    @if (Model.Game.Stock > 0)
+                    {
+                        <span class="stock-available">
+                            <i class="bi bi-check-circle-fill"></i> In Stock — @Model.Game.Stock available
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="stock-out">
+                            <i class="bi bi-x-circle-fill"></i> Out of Stock
+                        </span>
+                    }
+                </div>
+
+                <hr class="detail-divider" />
+
+                <div class="game-detail-specs">
+                    <div class="spec-row">
+                        <span class="spec-label">Platform</span>
+                        <span class="spec-value">@Model.Game.Platform</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Genre</span>
+                        <span class="spec-value">@Model.Game.Genre</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Release Year</span>
+                        <span class="spec-value">@Model.Game.ReleaseYear</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Condition</span>
+                        <span class="spec-value">Retro Classic</span>
+                    </div>
+                </div>
+
+                <hr class="detail-divider" />
+
+                @if (ViewBag.UserRole == "Customer" && Model.Game.Stock > 0)
+                {
+                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="add-to-cart-form">
+                        <input type="hidden" name="gameId" value="@Model.Game.Id" />
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="qty-control">
+                                <button type="button" class="qty-btn qty-decrease">−</button>
+                                <input type="number" id="detailQty" name="quantity" value="1" min="1" max="@Model.Game.Stock" class="qty-input" />
+                                <button type="button" class="qty-btn qty-increase">+</button>
+                            </div>
+                            <button type="submit" class="btn-add-to-cart">
+                                <i class="bi bi-cart-plus"></i> Add to Cart
+                            </button>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Games -->
+    @if (Model.RelatedGames.Any())
+    {
+        <div class="related-games-section">
+            <h3 class="section-title">You Might Also Like</h3>
+            <div class="row g-3">
+                @foreach (var game in Model.RelatedGames)
+                {
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="related-game-card">
+                            @if (!string.IsNullOrEmpty(game.CoverImageUrl))
+                            {
+                                <img src="@game.CoverImageUrl" alt="@game.Title" class="related-game-img" />
+                            }
+                            else
+                            {
+                                <div class="related-game-placeholder">
+                                    <i class="bi bi-joystick"></i>
+                                </div>
+                            }
+                            <div class="related-game-title">@game.Title</div>
+                            <div class="related-game-price">$@game.Price.ToString("F2")</div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

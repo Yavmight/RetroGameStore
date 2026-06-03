@@ -5,12 +5,17 @@
 
 <div class="d-flex justify-content-between align-items-center mb-2">
     <div>
-        <div class="page-title">🛒 Browse Games</div>
+        <div class="page-title"><i class="bi bi-shop"></i> Browse Games</div>
         <div class="page-subtitle">Welcome, @ViewBag.UserName — @Model.Count title(s) available</div>
     </div>
-    <a asp-controller="Orders" asp-action="MyOrders" class="btn btn-outline-primary">
-        <i class="bi bi-bag-check"></i> My Orders
-    </a>
+    <div class="d-flex gap-2">
+        <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-primary">
+            <i class="bi bi-cart3"></i> My Cart
+        </a>
+        <a asp-controller="Orders" asp-action="MyOrders" class="btn btn-outline-primary">
+            <i class="bi bi-bag-check"></i> My Orders
+        </a>
+    </div>
 </div>
 
 <!-- Filter Bar -->
@@ -50,21 +55,37 @@ else
         {
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="game-card">
-                    <div class="game-platform">@game.Platform • @game.Genre • @game.ReleaseYear</div>
-                    <div class="game-title">@game.Title</div>
-                    <div class="game-price mb-3">$@game.Price.ToString("F2")</div>
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <small class="text-muted">In stock: <strong style="color:#00cc66">@game.Stock</strong></small>
+                    <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" class="game-card-link">
+                        @if (!string.IsNullOrEmpty(game.CoverImageUrl))
+                        {
+                            <img src="@game.CoverImageUrl" alt="@game.Title" class="game-card-image" />
+                        }
+                        else
+                        {
+                            <div class="game-card-placeholder">
+                                <i class="bi bi-joystick"></i>
+                            </div>
+                        }
+                    </a>
+                    <div class="game-card-body">
+                        <div class="game-platform">@game.Platform • @game.Genre • @game.ReleaseYear</div>
+                        <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id" style="text-decoration:none; color:inherit;">
+                            <div class="game-title">@game.Title</div>
+                        </a>
+                        <div class="game-price mb-3">$@game.Price.ToString("F2")</div>
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <small class="text-muted">In stock: <strong style="color:#00cc66">@game.Stock</strong></small>
+                        </div>
+                        <!-- Add to Cart form -->
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-flex gap-2 mt-auto">
+                            <input type="hidden" name="gameId" value="@game.Id" />
+                            <input type="number" name="quantity" value="1" min="1" max="@game.Stock"
+                                   class="form-control form-control-sm" style="width: 70px;" />
+                            <button type="submit" class="btn btn-primary btn-sm w-100">
+                                <i class="bi bi-cart-plus"></i> Add to Cart
+                            </button>
+                        </form>
                     </div>
-                    <!-- Buy form -->
-                    <form asp-action="Buy" method="post" class="d-flex gap-2">
-                        <input type="hidden" name="gameId" value="@game.Id" />
-                        <input type="number" name="quantity" value="1" min="1" max="@game.Stock"
-                               class="form-control form-control-sm" style="width: 70px;" />
-                        <button type="submit" class="btn btn-primary btn-sm w-100">
-                            <i class="bi bi-cart-plus"></i> Buy
-                        </button>
-                    </form>
                 </div>
             </div>
         }
