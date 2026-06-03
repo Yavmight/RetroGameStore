@@ -84,14 +84,14 @@ namespace RetroGameStore.Migrations
                 columns: new[] { "Id", "CoverImageUrl", "Genre", "LowStockThreshold", "Platform", "Price", "ReleaseYear", "Stock", "Title" },
                 values: new object[,]
                 {
-                    { 1, null, 6, 3, 0, 29.99m, 1996, 5, "Crash Bandicoot" },
-                    { 2, null, 4, 3, 1, 24.99m, 2001, 2, "Gran Turismo 3" },
-                    { 3, null, 2, 3, 2, 34.99m, 1996, 8, "Pokémon Red" },
-                    { 4, null, 1, 3, 3, 39.99m, 2004, 3, "The Legend of Zelda: Minish Cap" },
-                    { 5, null, 6, 3, 4, 44.99m, 1996, 1, "Super Mario 64" },
-                    { 6, null, 1, 3, 4, 49.99m, 1998, 2, "The Legend of Zelda: Ocarina of Time" },
-                    { 7, null, 5, 3, 5, 54.99m, 2001, 4, "Super Smash Bros. Melee" },
-                    { 8, null, 0, 3, 0, 19.99m, 1996, 6, "Resident Evil" }
+                    { 1, "/images/games/crash_bandicoot.png", 6, 3, 0, 29.99m, 1996, 5, "Crash Bandicoot" },
+                    { 2, "/images/games/gran_turismo_3.png", 4, 3, 1, 24.99m, 2001, 2, "Gran Turismo 3" },
+                    { 3, "/images/games/pokemon_red.png", 2, 3, 2, 34.99m, 1996, 8, "Pokémon Red" },
+                    { 4, "/images/games/zelda_minish_cap.png", 1, 3, 3, 39.99m, 2004, 3, "The Legend of Zelda: Minish Cap" },
+                    { 5, "/images/games/super_mario_64.png", 6, 3, 4, 44.99m, 1996, 1, "Super Mario 64" },
+                    { 6, "/images/games/zelda_ocarina.png", 1, 3, 4, 49.99m, 1998, 2, "The Legend of Zelda: Ocarina of Time" },
+                    { 7, "/images/games/smash_bros_melee.png", 5, 3, 5, 54.99m, 2001, 4, "Super Smash Bros. Melee" },
+                    { 8, "/images/games/resident_evil.png", 0, 3, 0, 19.99m, 1996, 6, "Resident Evil" }
                 });
 
             migrationBuilder.InsertData(

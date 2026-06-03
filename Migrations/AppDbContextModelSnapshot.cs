@@ -56,6 +56,7 @@ namespace RetroGameStore.Migrations
                         new
                         {
                             Id = 1,
+                            CoverImageUrl = "/images/games/crash_bandicoot.png",
                             Genre = 6,
                             LowStockThreshold = 3,
                             Platform = 0,
@@ -67,6 +68,7 @@ namespace RetroGameStore.Migrations
                         new
                         {
                             Id = 2,
+                            CoverImageUrl = "/images/games/gran_turismo_3.png",
                             Genre = 4,
                             LowStockThreshold = 3,
                             Platform = 1,
@@ -78,6 +80,7 @@ namespace RetroGameStore.Migrations
                         new
                         {
                             Id = 3,
+                            CoverImageUrl = "/images/games/pokemon_red.png",
                             Genre = 2,
                             LowStockThreshold = 3,
                             Platform = 2,
@@ -89,6 +92,7 @@ namespace RetroGameStore.Migrations
                         new
                         {
                             Id = 4,
+                            CoverImageUrl = "/images/games/zelda_minish_cap.png",
                             Genre = 1,
                             LowStockThreshold = 3,
                             Platform = 3,
@@ -100,6 +104,7 @@ namespace RetroGameStore.Migrations
                         new
                         {
                             Id = 5,
+                            CoverImageUrl = "/images/games/super_mario_64.png",
                             Genre = 6,
                             LowStockThreshold = 3,
                             Platform = 4,
@@ -111,6 +116,7 @@ namespace RetroGameStore.Migrations
                         new
                         {
                             Id = 6,
+                            CoverImageUrl = "/images/games/zelda_ocarina.png",
                             Genre = 1,
                             LowStockThreshold = 3,
                             Platform = 4,
@@ -122,6 +128,7 @@ namespace RetroGameStore.Migrations
                         new
                         {
                             Id = 7,
+                            CoverImageUrl = "/images/games/smash_bros_melee.png",
                             Genre = 5,
                             LowStockThreshold = 3,
                             Platform = 5,
@@ -133,6 +140,7 @@ namespace RetroGameStore.Migrations
                         new
                         {
                             Id = 8,
+                            CoverImageUrl = "/images/games/resident_evil.png",
                             Genre = 0,
                             LowStockThreshold = 3,
                             Platform = 0,

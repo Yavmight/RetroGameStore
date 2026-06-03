@@ -121,5 +121,40 @@ namespace RetroGameStore.Controllers
             ViewBag.UserRole = HttpContext.Session.GetString("UserRole");
             return View(games);
         }
+
+        // GET: /Games/Details/5 — accessible to all logged-in users
+        public IActionResult Details(int id)
+        {
+            if (HttpContext.Session.GetString("UserEmail") == null)
+                return RedirectToAction("Login", "Account");
+
+            var game = _db.Games.Find(id);
+            if (game == null) return NotFound();
+
+            // Build gallery images (use the cover image + placeholder variations)
+            var gallery = new List<string>();
+            if (!string.IsNullOrEmpty(game.CoverImageUrl))
+            {
+                gallery.Add(game.CoverImageUrl);
+            }
+
+            // Get related games (same platform or genre, excluding current)
+            var relatedGames = _db.Games
+                .Where(g => g.Id != game.Id && (g.Platform == game.Platform || g.Genre == game.Genre))
+                .Take(4)
+                .ToList();
+
+            var viewModel = new GameDetailViewModel
+            {
+                Game = game,
+                GalleryImages = gallery,
+                RelatedGames = relatedGames
+            };
+
+            ViewBag.UserRole = HttpContext.Session.GetString("UserRole");
+            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+
+            return View(viewModel);
+        }
     }
 }

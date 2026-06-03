@@ -27,7 +27,8 @@ namespace RetroGameStore.Controllers
             ViewBag.TotalSales      = _db.Orders.Count();
             ViewBag.TotalRevenue    = _db.Orders
                                         .Where(o => o.Status == OrderStatus.Completed)
-                                        .Sum(o => (decimal?)o.TotalPrice) ?? 0;
+                                        .AsEnumerable()
+                                        .Sum(o => o.TotalPrice);
             ViewBag.TotalCustomers  = _db.Users.Count(u => u.Role == UserRole.Customer);
 
             // Recent 5 orders for the activity table
